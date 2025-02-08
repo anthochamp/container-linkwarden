@@ -1,0 +1,42 @@
+name: Validate & publish (schedule)
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  get-version-tag:
+    uses: anthochamp/dev-toolbox/.github/workflows/util-get-latest-git-version-tag.yml@5fb0e7fda20a8d86a485ca2e32bb9bf99e53de07
+
+  validate:
+    needs: get-version-tag
+    uses: anthochamp/dev-toolbox/.github/workflows/container-validate.yml@36d45ce9f8e590f39d29858f04d073f94ebbb711
+    with:
+      checkout-ref: ${{ needs.get-version-tag.outputs.tag }}
+
+  pre-publish:
+    needs: [validate, get-version-tag]
+    uses: ./.github/workflows/linkwarden-pre-publish.yml
+    with:
+      checkout-ref: ${{ needs.get-version-tag.outputs.tag }}
+      dockerfile-dir: src
+
+  publish:
+    needs: [validate, get-version-tag, pre-publish]
+    permissions:
+      packages: write
+      id-token: write # used for sigstore/fulcio identity challenge
+    uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@5fb0e7fda20a8d86a485ca2e32bb9bf99e53de07
+    with:
+      checkout-ref: ${{ needs.get-version-tag.outputs.tag }}
+      dockerfile-dir: src
+      dhub-readme-file: ./CONTAINER.md
+      version: ${{ needs.get-version-tag.outputs.version }}
+      alt-version: ${{ needs.pre-publish.outputs.linkwarden-version }}
+      alt-version-prefix: linkwarden
+      container-image-name: ${{ needs.pre-publish.outputs.container-image-name }}
+    secrets:
+      dhub-username: ${{ secrets.DHUB_USERNAME }}
+      dhub-password: ${{ secrets.DHUB_PASSWORD }}
+      ghcr-username: ${{ github.repository_owner }}
+      ghcr-password: ${{ secrets.GITHUB_TOKEN }}

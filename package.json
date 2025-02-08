@@ -1,0 +1,28 @@
+{
+	"private": true,
+	"scripts": {
+		"test": "node --import=tsx --test-concurrency 1 --test tests/**/*.test.*",
+		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
+		"biome:check": "biome check --error-on-warnings",
+		"biome:fix": "biome check --write",
+		"biome:fix-unsafe": "biome check --write --unsafe",
+		"markdownlint:check": "markdownlint-cli2",
+		"markdownlint:fix": "markdownlint-cli2 --fix",
+		"postinstall": "is-ci || lefthook install"
+	},
+	"devDependencies": {
+		"@types/node": "22.13.1",
+		"@biomejs/biome": "1.9.4",
+		"tsx": "4.19.2",
+		"typescript": "5.7.3",
+		"lefthook": "1.10.10",
+		"markdownlint-cli2": "0.17.2",
+		"is-ci": "4.1.0",
+		"@ac-essentials/tsconfig": "0.1.1",
+		"@ac-essentials/docker-cli": "0.1.2",
+		"@ac-essentials/find-git-dir": "0.1.3",
+		"@ac-essentials/misc-util": "0.1.3",
+		"@ac-essentials/biome-config": "0.1.0",
+		"@ac-essentials/markdownlint-cli2-config": "0.1.0"
+	}
+}
