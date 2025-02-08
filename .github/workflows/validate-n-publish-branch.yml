@@ -23,7 +23,7 @@ jobs:
     permissions:
       packages: write
       id-token: write # used for sigstore/fulcio identity challenge
-    uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@5fb0e7fda20a8d86a485ca2e32bb9bf99e53de07
+    uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@9e8d696c832ca91f2a5da089096fe6fa6cedbee3
     with:
       dockerfile-dir: src
       dhub-readme-file: ./CONTAINER.md
@@ -31,6 +31,7 @@ jobs:
       alt-version: ${{ needs.pre-publish.outputs.linkwarden-version }}
       alt-version-prefix: linkwarden
       container-image-name: ${{ needs.pre-publish.outputs.container-image-name }}
+      build-platforms: linux/amd64,linux/arm64
     secrets:
       dhub-username: ${{ secrets.DHUB_USERNAME }}
       dhub-password: ${{ secrets.DHUB_PASSWORD }}
