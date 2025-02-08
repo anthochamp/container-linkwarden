@@ -60,7 +60,7 @@ LINKWARDEN_DB_PORT="${LINKWARDEN_DB_PORT:-5432}"
 LINKWARDEN_DB_NAME="${LINKWARDEN_DB_NAME:-linkwarden}"
 LINKWARDEN_DB_USER="${LINKWARDEN_DB_USER:-$LINKWARDEN_DB_NAME}"
 LINKWARDEN_DB_PASSWORD="${LINKWARDEN_DB_PASSWORD:-}"
-LINKWARDEN_DATA_DIR="${LINKWARDEN_DATA_DIR:-/var/lib/linkwarden}"
+LINKWARDEN_DATA_DIR="${LINKWARDEN_DATA_DIR:-${STORAGE_FOLDER:-/var/lib/linkwarden}}"
 
 #
 # NextAuth options
@@ -142,13 +142,11 @@ if [ -z "${DATABASE_URL:-}" ]; then
 fi
 
 # App options
-if [ -z "${STORAGE_FOLDER:-}" ]; then
-	STORAGE_FOLDER=$LINKWARDEN_DATA_DIR
-fi
+export STORAGE_FOLDER="$LINKWARDEN_DATA_DIR"
 
 # Fix owner on mounted folders
-mkdir -p "$STORAGE_FOLDER"
-chown -R root:root "$STORAGE_FOLDER"
+mkdir -p "$LINKWARDEN_DATA_DIR"
+chown -R root:root "$LINKWARDEN_DATA_DIR"
 
 if [ "$1" = "yarn" ]; then
 	yarn prisma migrate deploy
