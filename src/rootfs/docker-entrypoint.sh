@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
+# shellcheck disable=SC3043
 encodeUriComponent() {
 	local value
 	value=$(printf '%s' "$1" | sed 's/"/\\\"/g')
@@ -8,9 +9,10 @@ encodeUriComponent() {
 	node -e "console.log(encodeURIComponent(\"$value\"))"
 }
 
-# shellcheck disable=SC2120
+# shellcheck disable=SC2120,SC3043
 replaceEnvSecrets() {
 	# replaceEnvSecrets 1.0.0
+	# https://gist.github.com/anthochamp/d4d9537f52e5b6c42f0866dd823a605f
 	local prefix="${1:-}"
 
 	for envSecretName in $(export | awk '{print $2}' | grep -oE '^[^=]+' | grep '__FILE$'); do
