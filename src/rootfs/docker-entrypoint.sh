@@ -64,7 +64,7 @@ LINKWARDEN_DB_USER="${LINKWARDEN_DB_USER:-$LINKWARDEN_DB_NAME}"
 LINKWARDEN_DB_PASSWORD="${LINKWARDEN_DB_PASSWORD:-}"
 
 # STORAGE_FOLDER is relative to the app working directory
-LINKWARDEN_DATA_DIR="${LINKWARDEN_DATA_DIR:-/data/${STORAGE_FOLDER:-}}"
+LINKWARDEN_DATA_DIR="${LINKWARDEN_DATA_DIR:-/data/${STORAGE_FOLDER:-data}}"
 
 #
 # NextAuth options
@@ -154,7 +154,7 @@ mkdir -p "$LINKWARDEN_DATA_DIR"
 chown -R root:root "$LINKWARDEN_DATA_DIR"
 
 if [ "$1" = "yarn" ]; then
-	yarn prisma migrate deploy
+	yarn prisma:deploy
 fi
 
 exec "$@"

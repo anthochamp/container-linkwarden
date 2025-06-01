@@ -6,4 +6,4 @@ EXPOSE 3000
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "concurrently:start" ]
