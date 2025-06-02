@@ -16,7 +16,7 @@
 		"tsx": "4.19.4",
 		"typescript": "5.8.3",
 		"lefthook": "1.11.13",
-		"markdownlint-cli2": "0.17.2",
+		"markdownlint-cli2": "0.18.1",
 		"is-ci": "4.1.0",
 		"@ac-essentials/tsconfig": "0.1.1",
 		"@ac-essentials/docker-cli": "0.1.2",
