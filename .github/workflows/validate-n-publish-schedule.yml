@@ -6,11 +6,11 @@ on:
 
 jobs:
   get-version-tag:
-    uses: anthochamp/dev-toolbox/.github/workflows/util-get-latest-git-version-tag.yml@b9a37d6321d8353e62b17d37812367f4caaa57cf
+    uses: anthochamp/dev-toolbox/.github/workflows/util-get-latest-git-version-tag.yml@29286f8eb85cc4f61525c18a874713a4867a37e0
 
   validate:
     needs: get-version-tag
-    uses: anthochamp/dev-toolbox/.github/workflows/container-validate.yml@b9a37d6321d8353e62b17d37812367f4caaa57cf
+    uses: anthochamp/dev-toolbox/.github/workflows/container-validate.yml@29286f8eb85cc4f61525c18a874713a4867a37e0
     with:
       checkout-ref: ${{ needs.get-version-tag.outputs.tag }}
 
@@ -26,7 +26,7 @@ jobs:
     permissions:
       packages: write
       id-token: write # used for sigstore/fulcio identity challenge
-    uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@b9a37d6321d8353e62b17d37812367f4caaa57cf
+    uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@29286f8eb85cc4f61525c18a874713a4867a37e0
     with:
       checkout-ref: ${{ needs.get-version-tag.outputs.tag }}
       dockerfile-dir: src
