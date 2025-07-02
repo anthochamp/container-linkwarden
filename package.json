@@ -13,7 +13,7 @@
 	"devDependencies": {
 		"@types/node": "22.16.0",
 		"@biomejs/biome": "1.9.4",
-		"tsx": "4.19.4",
+		"tsx": "4.20.3",
 		"typescript": "5.8.3",
 		"lefthook": "1.11.14",
 		"markdownlint-cli2": "0.18.1",
