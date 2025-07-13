@@ -22,7 +22,7 @@
 		"@ac-essentials/docker-cli": "0.1.2",
 		"@ac-essentials/find-git-dir": "0.1.3",
 		"@ac-essentials/misc-util": "0.1.3",
-		"@ac-essentials/biome-config": "0.1.0",
+		"@ac-essentials/biome-config": "0.2.0",
 		"@ac-essentials/markdownlint-cli2-config": "0.1.0"
 	}
 }
