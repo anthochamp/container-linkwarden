@@ -6,7 +6,7 @@ on:
 
 jobs:
   validate:
-    uses: anthochamp/dev-toolbox/.github/workflows/container-validate.yml@f4fc003b51a578ca8881b75ca53c430a659e0594
+    uses: anthochamp/dev-toolbox/.github/workflows/container-validate.yml@e42e5e8bccb0a879f7644c7f3986fe5e954d94aa
 
   pre-publish:
     needs: validate
@@ -31,7 +31,7 @@ jobs:
     permissions:
       packages: write
       id-token: write # used for sigstore/fulcio identity challenge
-    uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@f4fc003b51a578ca8881b75ca53c430a659e0594
+    uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@e42e5e8bccb0a879f7644c7f3986fe5e954d94aa
     with:
       dockerfile-dir: src
       dhub-readme-file: ./CONTAINER.md
