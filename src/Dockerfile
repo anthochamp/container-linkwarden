@@ -1,4 +1,4 @@
-FROM ghcr.io/linkwarden/linkwarden:v2.12.1@sha256:19774e821de6601bef2adfe67a2bb595fcebfb6ae91a7509449634d184ff005f
+FROM ghcr.io/linkwarden/linkwarden:v2.12.2@sha256:c1c6f417ea566de2c2dac6e79353ee5f40cb6a44fd9dd3970c83e6fc098de1df
 
 COPY --chmod=775 /rootfs/docker-entrypoint.sh /
 
