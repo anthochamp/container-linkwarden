@@ -15,7 +15,7 @@
 		"@biomejs/biome": "2.2.4",
 		"tsx": "4.20.6",
 		"typescript": "5.9.3",
-		"lefthook": "1.12.3",
+		"lefthook": "1.13.6",
 		"markdownlint-cli2": "0.18.1",
 		"is-ci": "4.1.0",
 		"@ac-essentials/tsconfig": "0.1.1",
