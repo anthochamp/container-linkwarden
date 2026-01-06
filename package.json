@@ -11,12 +11,12 @@
 		"postinstall": "is-ci || lefthook install"
 	},
 	"devDependencies": {
-		"@types/node": "24.9.2",
-		"@biomejs/biome": "2.3.3",
-		"tsx": "4.20.6",
+		"@types/node": "24.10.4",
+		"@biomejs/biome": "2.3.11",
+		"tsx": "4.21.0",
 		"typescript": "5.9.3",
-		"lefthook": "2.0.2",
-		"markdownlint-cli2": "0.18.1",
+		"lefthook": "2.0.13",
+		"markdownlint-cli2": "0.20.0",
 		"is-ci": "4.1.0",
 		"@ac-essentials/tsconfig": "0.5.0",
 		"@ac-essentials/docker-cli": "0.1.2",
