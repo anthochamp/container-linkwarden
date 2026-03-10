@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"scripts": {
-		"test": "node --import=tsx --test-concurrency 1 --test tests/**/*.test.*",
+		"test": "vitest run",
 		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
 		"biome:check": "biome check --error-on-warnings",
 		"biome:fix": "biome check --write",
@@ -22,6 +22,8 @@
 		"@ac-essentials/cli": "0.1.4",
 		"@ac-essentials/misc-util": "0.5.1",
 		"@ac-essentials/biome-config": "0.4.0",
-		"@ac-essentials/markdownlint-cli2-config": "0.1.0"
+		"@ac-essentials/markdownlint-cli2-config": "0.1.0",
+		"vitest": "4.0.18",
+		"testcontainers": "^10.0.0"
 	}
 }
