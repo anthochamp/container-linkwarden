@@ -11,19 +11,19 @@
 		"postinstall": "is-ci || lefthook install"
 	},
 	"devDependencies": {
-		"@types/node": "24.11.0",
-		"@biomejs/biome": "2.4.5",
+		"@types/node": "24.12.0",
+		"@biomejs/biome": "2.4.10",
 		"tsx": "4.21.0",
 		"typescript": "5.9.3",
-		"lefthook": "2.1.2",
-		"markdownlint-cli2": "0.21.0",
+		"lefthook": "2.1.4",
+		"markdownlint-cli2": "0.22.0",
 		"is-ci": "4.1.0",
 		"@ac-essentials/tsconfig": "0.5.0",
 		"@ac-essentials/cli": "0.1.4",
 		"@ac-essentials/misc-util": "0.6.1",
 		"@ac-essentials/biome-config": "0.4.0",
 		"@ac-essentials/markdownlint-cli2-config": "0.1.0",
-		"vitest": "4.0.18",
+		"vitest": "4.1.2",
 		"testcontainers": "10.28.0"
 	}
 }
