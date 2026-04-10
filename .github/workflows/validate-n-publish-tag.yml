@@ -29,6 +29,7 @@ jobs:
   publish:
     needs: [validate, pre-publish, get-version]
     permissions:
+      contents: read
       packages: write
       id-token: write # used for sigstore/fulcio identity challenge
     uses: anthochamp/dev-toolbox/.github/workflows/container-publish.yml@main

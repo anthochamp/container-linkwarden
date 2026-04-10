@@ -1,5 +1,7 @@
 {
 	"private": true,
+	"description": "Linkwarden-based container for self-hosted collaborative bookmark management",
+	"author": "Anthony Champagne <dev@anthonychampagne.fr>",
 	"scripts": {
 		"test": "vitest run",
 		"tsc:check": "tsc -noEmit -p ./tsconfig.json",
