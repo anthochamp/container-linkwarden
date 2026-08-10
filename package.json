@@ -23,7 +23,7 @@
 		"@ac-essentials/tsconfig": "0.5.0",
 		"@ac-essentials/cli": "0.1.4",
 		"@ac-essentials/misc-util": "0.6.1",
-		"@ac-essentials/biome-config": "0.4.0",
+		"@ac-essentials/biome-config": "0.5.0",
 		"@ac-essentials/markdownlint-cli2-config": "0.1.0",
 		"vitest": "4.1.10",
 		"testcontainers": "12.1.0"
