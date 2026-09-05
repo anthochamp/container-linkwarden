@@ -14,10 +14,10 @@
 	},
 	"devDependencies": {
 		"@types/node": "24.13.3",
-		"@biomejs/biome": "2.5.7",
-		"tsx": "4.23.11",
+		"@biomejs/biome": "2.5.11",
+		"tsx": "4.23.13",
 		"typescript": "7.0.2",
-		"lefthook": "2.1.10",
+		"lefthook": "2.1.12",
 		"markdownlint-cli2": "0.23.2",
 		"is-ci": "4.1.0",
 		"@ac-essentials/tsconfig": "0.5.2",
@@ -25,7 +25,7 @@
 		"@ac-essentials/misc-util": "0.7.0",
 		"@ac-essentials/biome-config": "0.5.0",
 		"@ac-essentials/markdownlint-cli2-config": "0.1.0",
-		"vitest": "4.1.10",
+		"vitest": "4.1.11",
 		"testcontainers": "12.1.0"
 	}
 }
