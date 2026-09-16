@@ -34,7 +34,7 @@ type UseContainerOptions = {
 };
 
 export function initSuite() {
-	let pg: StartedTestContainer;
+	let pg: StartedTestContainer | undefined;
 	let pgPort: number;
 
 	let pendingRunOptions: ContainerRunOptions = {};
@@ -66,7 +66,7 @@ export function initSuite() {
 	});
 
 	afterAll(async () => {
-		await pg.stop();
+		await pg?.stop();
 	});
 
 	return {
