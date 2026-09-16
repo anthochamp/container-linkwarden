@@ -1,27 +1,15 @@
-import { randomBytes } from "node:crypto";
 import * as path from "node:path";
-import {
-	dockerBuildxBuild,
-	dockerContainerRm,
-	dockerContextShow,
-	dockerContextUse,
-	dockerImageRm,
-} from "@ac-essentials/cli";
-import {
-	type EnvVariables,
-	escapeCommandArg,
-	execAsync,
-	getRandomEphemeralPort,
-	isHttpAvailable,
-} from "@ac-essentials/misc-util";
+
+import type { DockerContainerRunOptions } from "@ac-kit/cmd-docker";
+import { getRandomEphemeralPort } from "@ac-kit/core";
+import type { EnvVariables } from "@ac-kit/format-shell";
+import { initDockerSuite } from "@ac-kit/integration-test-util";
+import { isHttpAvailable } from "@ac-kit/net-http";
 import type { StartedTestContainer } from "testcontainers";
 import { GenericContainer, Wait } from "testcontainers";
-import { afterAll, afterEach, beforeAll, vi } from "vitest";
+import { afterAll, beforeAll, vi } from "vitest";
 
 const srcPath = path.resolve(path.join(__dirname, "..", "src"));
-
-export const docker = (cmd: string) =>
-	execAsync(`docker --context default ${cmd}`, { encoding: "utf-8" });
 
 const PG_PORT = 5432;
 const LINKWARDEN_APP_PORT = 3000;
@@ -35,34 +23,32 @@ export const DB_USER = "linkwarden";
 // Prisma migration fails and the container crashes.
 export const SPECIAL_CHARS_PASSWORD = "p@ss#w0rd/test=1";
 
-type StartContainerOptions = {
+type ContainerRunOptions = Omit<DockerContainerRunOptions, "name" | "context" | "detach">;
+
+type UseContainerOptions = {
 	dbPassword?: string;
 	env?: EnvVariables;
 };
 
 export function initSuite() {
-	let initialContext: string;
-	const containerName = `test-linkwarden-${randomBytes(8).toString("hex")}`;
-	const containerImageName = `${containerName}-img`;
 	let pg: StartedTestContainer;
 	let pgPort: number;
 
-	async function stopContainer() {
-		try {
-			await dockerContainerRm([containerName], { force: true });
-		} catch (_) {}
-	}
+	let pendingRunOptions: ContainerRunOptions = {};
+	let pendingUrl = "";
+
+	const { containerImageName } = initDockerSuite(srcPath, {
+		containerNamePrefix: "test-linkwarden-",
+		containerRunOptions: () => pendingRunOptions,
+		onContainerStarted: async () => {
+			await vi.waitUntil(() => isHttpAvailable(pendingUrl), {
+				timeout: 240_000,
+				interval: 2000,
+			});
+		},
+	});
 
 	beforeAll(async () => {
-		initialContext = await dockerContextShow();
-		await dockerContextUse("default");
-
-		await stopContainer();
-
-		try {
-			await dockerImageRm([containerImageName], { force: true });
-		} catch (_) {}
-
 		pg = await new GenericContainer("postgres:16-alpine")
 			.withEnvironment({
 				POSTGRES_DB: DB_NAME,
@@ -74,60 +60,37 @@ export function initSuite() {
 			.start();
 
 		pgPort = pg.getMappedPort(PG_PORT);
-
-		await dockerBuildxBuild(srcPath, { tags: [containerImageName] });
 	});
 
 	afterAll(async () => {
-		try {
-			await dockerImageRm([containerImageName], { force: true });
-		} catch (_) {}
-		try {
-			await pg.stop();
-		} catch (_) {}
-		try {
-			await dockerContextUse(initialContext);
-		} catch (_) {}
-	});
-
-	afterEach(async () => {
-		await stopContainer();
+		await pg.stop();
 	});
 
 	return {
-		startContainer: async (options?: StartContainerOptions) => {
+		containerImageName,
+		/** Registers the container's run options for every test in this describe. */
+		useContainer: (options?: UseContainerOptions) => {
 			const appPort = getRandomEphemeralPort();
 			const dbPassword = options?.dbPassword ?? SPECIAL_CHARS_PASSWORD;
-
-			const baseEnv: EnvVariables = {
-				LINKWARDEN_URL: `http://localhost:${appPort}`,
-				LINKWARDEN_SECRET_KEY: "test-secret-key-for-integration-tests-only",
-				LINKWARDEN_DB_HOST: "host.docker.internal",
-				LINKWARDEN_DB_PORT: String(pgPort),
-				LINKWARDEN_DB_NAME: DB_NAME,
-				LINKWARDEN_DB_USER: DB_USER,
-				LINKWARDEN_DB_PASSWORD: dbPassword,
-			};
-
-			const env = { ...baseEnv, ...options?.env };
-			const envArgs = Object.entries(env).map(
-				([k, v]) => `-e ${escapeCommandArg(`${k}=${String(v ?? "")}`)}`,
-			);
-			const envArgsStr = envArgs.join(" ");
-
-			await docker(
-				`run -d --name ${containerName}` +
-					" --add-host host.docker.internal:host-gateway" +
-					` -p ${appPort}:${LINKWARDEN_APP_PORT}` +
-					` ${envArgsStr}` +
-					` ${containerImageName}`,
-			);
-
 			const url = `http://127.0.0.1:${appPort}`;
 
-			await vi.waitUntil(() => isHttpAvailable(url), {
-				timeout: 240_000,
-				interval: 2000,
+			beforeAll(() => {
+				const baseEnv: EnvVariables = {
+					LINKWARDEN_URL: `http://localhost:${appPort}`,
+					LINKWARDEN_SECRET_KEY: "test-secret-key-for-integration-tests-only",
+					LINKWARDEN_DB_HOST: "host.docker.internal",
+					LINKWARDEN_DB_PORT: String(pgPort),
+					LINKWARDEN_DB_NAME: DB_NAME,
+					LINKWARDEN_DB_USER: DB_USER,
+					LINKWARDEN_DB_PASSWORD: dbPassword,
+				};
+
+				pendingRunOptions = {
+					addHost: ["host.docker.internal:host-gateway"],
+					publish: [`${appPort}:${LINKWARDEN_APP_PORT}`],
+					env: { ...baseEnv, ...options?.env },
+				};
+				pendingUrl = url;
 			});
 
 			return { appPort, url };

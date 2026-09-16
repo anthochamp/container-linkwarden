@@ -1,1 +1,1 @@
-module.exports = require("@ac-essentials/markdownlint-cli2-config");
+module.exports = require("@ac-kit/markdownlint-cli2-config");
