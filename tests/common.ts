@@ -23,7 +23,10 @@ export const DB_USER = "linkwarden";
 // Prisma migration fails and the container crashes.
 export const SPECIAL_CHARS_PASSWORD = "p@ss#w0rd/test=1";
 
-type ContainerRunOptions = Omit<DockerContainerRunOptions, "name" | "context" | "detach">;
+type ContainerRunOptions = Omit<
+	DockerContainerRunOptions,
+	"name" | "context" | "detach"
+>;
 
 type UseContainerOptions = {
 	dbPassword?: string;
